@@ -16,13 +16,14 @@ HELP_MSG = """Here are all commands to work with licenses:
 Bot will send you warning messages about licenses that have expired. You can set the time when it will do it.
 """
 
+
 @bot.message_handler(commands=["start"])
 def start(msg):
     bot.send_message(msg.chat.id, "Welcome to MyCar! It's license tracking bot. For more information, send /help.")
 
 
 @bot.message_handler(commands=["help"])
-def help(msg):
+def bothelp(msg):
     bot.send_message(msg.chat.id, HELP_MSG)
 
 
@@ -31,8 +32,9 @@ def settings(msg):
     bot.send_message(msg.chat.id, "Alright, now give me the hour (just a number, 24-h format) when I can send you messages about expired licenses.")
     bot.register_next_step_handler(msg, settime)
 
+
 def settime(mesg):
-    global time
+    global t
     temp = None
     print(mesg.text)
     try:
@@ -41,11 +43,11 @@ def settime(mesg):
         bot.send_message(mesg.chat.id, "It's not a number. Try again")
         return
 
-    if not (temp >= 0 and temp <= 23):
+    if not (0 <= temp <= 23):
         bot.send_message(mesg.chat.id, "Incorrect time format. Try again")
         return
 
-    time = temp
+    t = temp
     bot.send_message(mesg.chat.id, "New sending time set!")
 
 
